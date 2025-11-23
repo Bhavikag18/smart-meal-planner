@@ -1,0 +1,289 @@
+Name,Type,Calories,Proteins,Fats,Carbs,Meal_Type,Category
+Oatmeal,Veg,143,5,2,27,Breakfast,Complete
+Scrambled Eggs,Non-Veg,190,14,14,1,Breakfast,Complete
+Idli Sambar,Veg,183,6,1,33,Breakfast,Complete
+Poha,Veg,205,4,7,31,Breakfast,Complete
+Avocado Toast,Veg,237,6,17,20,Breakfast,Complete
+Masala Dosa,Veg,342,7,11,47,Breakfast,Complete
+Aloo Paratha,Veg,291,8,15,40,Breakfast,Complete
+Upma,Veg,172,3,5,31,Breakfast,Complete
+Besan Chilla,Veg,224,9,8,24,Breakfast,Complete
+Paneer Paratha,Veg,304,12,16,34,Breakfast,Complete
+Moong Dal Cheela,Veg,200,12,6,28,Breakfast,Complete
+Veg Grilled Sandwich,Veg,270,7,9,40,Breakfast,Complete
+Methi Thepla,Veg,208,4,8,28,Breakfast,Complete
+Vermicelli Upma,Veg,218,4,7,34,Breakfast,Complete
+Rava Idli,Veg,161,5,3,24,Breakfast,Complete
+Oats Pancake,Veg,231,8,7,32,Breakfast,Complete
+Egg Bhurji + Toast,Non-Veg,288,16,17,19,Breakfast,Complete
+Cheese Omelette,Non-Veg,330,17,22,4,Breakfast,Complete
+Muesli with Milk,Veg,286,10,6,46,Breakfast,Complete
+Sabudana Khichdi,Veg,351,3,14,53,Breakfast,Complete
+Paneer Butter Masala,Veg,288,11,25,9,Lunch,Gravy
+Paneer Butter Masala,Veg,300,11,26,10,Dinner,Gravy
+Dal Makhani,Veg,293,9,14,19,Lunch,Gravy
+Dal Makhani,Veg,293,9,14,19,Dinner,Gravy
+Chana Masala,Veg,213,11,7,30,Lunch,Gravy
+Chana Masala,Veg,226,12,7,29,Dinner,Gravy
+Palak Paneer,Veg,260,13,20,8,Lunch,Gravy
+Palak Paneer,Veg,271,13,19,7,Dinner,Gravy
+Chicken Curry,Non-Veg,285,24,17,5,Lunch,Gravy
+Chicken Curry,Non-Veg,301,25,17,4,Dinner,Gravy
+Butter Chicken,Non-Veg,347,27,21,7,Lunch,Gravy
+Butter Chicken,Non-Veg,348,26,21,8,Dinner,Gravy
+Fish Curry,Non-Veg,269,24,14,5,Lunch,Gravy
+Fish Curry,Non-Veg,286,25,14,4,Dinner,Gravy
+Egg Curry,Non-Veg,230,12,16,5,Lunch,Gravy
+Egg Curry,Non-Veg,215,11,15,5,Dinner,Gravy
+Kadai Vegetable,Veg,179,5,10,15,Lunch,Gravy
+Kadai Vegetable,Veg,171,4,9,15,Dinner,Gravy
+Rajma Masala,Veg,233,10,7,30,Lunch,Gravy
+Rajma Masala,Veg,233,9,8,31,Dinner,Gravy
+Mutter Paneer,Veg,271,11,18,12,Lunch,Gravy
+Mutter Paneer,Veg,273,11,18,12,Dinner,Gravy
+Malai Kofta,Veg,334,8,22,18,Lunch,Gravy
+Malai Kofta,Veg,304,8,21,17,Dinner,Gravy
+Bhindi Masala,Veg,145,3,8,12,Lunch,Dry
+Bhindi Masala,Veg,154,3,7,12,Dinner,Dry
+Aloo Gobi,Veg,181,4,8,20,Lunch,Dry
+Aloo Gobi,Veg,176,4,9,19,Dinner,Dry
+Chicken Stir Fry,Non-Veg,260,25,9,7,Lunch,Dry
+Chicken Stir Fry,Non-Veg,247,24,10,8,Dinner,Dry
+Jeera Aloo,Veg,165,3,8,22,Lunch,Dry
+Jeera Aloo,Veg,162,2,7,22,Dinner,Dry
+Baingan Bharta,Veg,134,3,6,15,Lunch,Dry
+Baingan Bharta,Veg,136,2,5,15,Dinner,Dry
+Mix Veg,Veg,175,3,7,18,Lunch,Dry
+Mix Veg,Veg,176,3,8,17,Dinner,Dry
+Vegetable Biryani,Veg,361,8,11,48,Lunch,Complete
+Vegetable Biryani,Veg,335,7,11,48,Dinner,Complete
+Chicken Biryani,Non-Veg,466,24,18,43,Lunch,Complete
+Chicken Biryani,Non-Veg,467,25,17,45,Dinner,Complete
+Rice and Dal,Veg,306,9,4,51,Lunch,Complete
+Rice and Dal,Veg,299,10,5,48,Dinner,Complete
+Khichdi,Veg,253,7,6,41,Lunch,Complete
+Khichdi,Veg,244,7,5,41,Dinner,Complete
+Pasta Arrabbiata,Veg,346,9,11,54,Lunch,Complete
+Pasta Arrabbiata,Veg,360,10,12,53,Dinner,Complete
+Grilled Chicken Salad,Non-Veg,307,31,9,15,Lunch,Complete
+Grilled Chicken Salad,Non-Veg,298,28,9,14,Dinner,Complete
+Curd Rice,Veg,212,5,8,36,Lunch,Complete
+Curd Rice,Veg,229,5,8,34,Dinner,Complete
+Veg Pulao,Veg,206,3,5,35,Lunch,RiceSide
+Veg Pulao,Veg,192,3,5,33,Dinner,RiceSide
+Jeera Rice,Veg,180,2,5,33,Lunch,RiceSide
+Jeera Rice,Veg,188,3,5,33,Dinner,RiceSide
+Peas Pulao,Veg,185,4,5,35,Lunch,RiceSide
+Peas Pulao,Veg,190,4,5,34,Dinner,RiceSide
+Ghee Rice,Veg,209,1,9,28,Lunch,RiceSide
+Ghee Rice,Veg,222,1,10,29,Dinner,RiceSide
+Greek Yogurt,Veg,97,9,0,15,Snack,Snack
+Almonds (Handful),Veg,158,5,13,5,Snack,Snack
+Fruit Salad,Veg,121,1,0,30,Snack,Snack
+Chickpea Salad,Veg,208,9,7,25,Snack,Snack
+Roasted Makhana,Veg,103,2,0,20,Snack,Snack
+Sprouts Salad,Veg,146,8,1,25,Snack,Snack
+Corn Chaat,Veg,172,5,2,34,Snack,Snack
+Vegetable Sandwich,Veg,240,7,7,36,Snack,Snack
+Boiled Eggs (2),Non-Veg,144,11,10,0,Snack,Snack
+Protein Smoothie,Veg,198,19,3,24,Snack,Snack
+Dhokla,Veg,159,5,3,25,Snack,Snack
+Cucumber Raita,Veg,76,3,3,7,Side,Side
+Boondi Raita,Veg,123,2,5,11,Side,Side
+Green Salad,Veg,48,0,0,10,Side,Side
+Buttermilk (Chaas),Veg,61,2,2,7,Side,Beverage
+Lassi (Sweet),Veg,196,5,7,28,Side,Beverage
+Masala Chai,Veg,97,1,2,14,Side,Beverage
+Green Tea,Veg,4,0,0,1,Side,Beverage
+Oatmeal,Veg,156,5,3,27,Breakfast,Complete
+Scrambled Eggs,Non-Veg,193,13,14,1,Breakfast,Complete
+Idli Sambar,Veg,185,5,1,34,Breakfast,Complete
+Poha,Veg,201,4,8,29,Breakfast,Complete
+Avocado Toast,Veg,240,5,17,20,Breakfast,Complete
+Masala Dosa,Veg,353,7,12,50,Breakfast,Complete
+Aloo Paratha,Veg,301,7,14,41,Breakfast,Complete
+Upma,Veg,183,4,5,28,Breakfast,Complete
+Besan Chilla,Veg,228,9,7,25,Breakfast,Complete
+Paneer Paratha,Veg,306,12,16,34,Breakfast,Complete
+Moong Dal Cheela,Veg,190,12,5,28,Breakfast,Complete
+Veg Grilled Sandwich,Veg,272,8,10,40,Breakfast,Complete
+Methi Thepla,Veg,192,5,8,27,Breakfast,Complete
+Vermicelli Upma,Veg,226,5,7,35,Breakfast,Complete
+Rava Idli,Veg,160,6,4,24,Breakfast,Complete
+Oats Pancake,Veg,236,8,7,31,Breakfast,Complete
+Egg Bhurji + Toast,Non-Veg,302,15,18,19,Breakfast,Complete
+Cheese Omelette,Non-Veg,334,18,21,4,Breakfast,Complete
+Muesli with Milk,Veg,269,10,6,45,Breakfast,Complete
+Sabudana Khichdi,Veg,338,2,14,56,Breakfast,Complete
+Paneer Butter Masala,Veg,299,11,25,9,Lunch,Gravy
+Paneer Butter Masala,Veg,296,12,24,10,Dinner,Gravy
+Dal Makhani,Veg,276,9,14,19,Lunch,Gravy
+Dal Makhani,Veg,284,9,15,19,Dinner,Gravy
+Chana Masala,Veg,230,12,8,30,Lunch,Gravy
+Chana Masala,Veg,217,11,7,31,Dinner,Gravy
+Palak Paneer,Veg,263,14,20,8,Lunch,Gravy
+Palak Paneer,Veg,272,13,19,7,Dinner,Gravy
+Chicken Curry,Non-Veg,298,25,17,4,Lunch,Gravy
+Chicken Curry,Non-Veg,309,24,17,4,Dinner,Gravy
+Butter Chicken,Non-Veg,339,26,21,7,Lunch,Gravy
+Butter Chicken,Non-Veg,343,27,22,8,Dinner,Gravy
+Fish Curry,Non-Veg,283,24,14,5,Lunch,Gravy
+Fish Curry,Non-Veg,288,24,15,4,Dinner,Gravy
+Egg Curry,Non-Veg,221,12,16,5,Lunch,Gravy
+Egg Curry,Non-Veg,209,11,15,5,Dinner,Gravy
+Kadai Vegetable,Veg,187,4,9,14,Lunch,Gravy
+Kadai Vegetable,Veg,176,4,9,14,Dinner,Gravy
+Rajma Masala,Veg,246,10,7,31,Lunch,Gravy
+Rajma Masala,Veg,238,9,7,29,Dinner,Gravy
+Mutter Paneer,Veg,273,11,17,12,Lunch,Gravy
+Mutter Paneer,Veg,264,10,18,12,Dinner,Gravy
+Malai Kofta,Veg,310,8,21,18,Lunch,Gravy
+Malai Kofta,Veg,312,7,21,17,Dinner,Gravy
+Bhindi Masala,Veg,145,3,8,11,Lunch,Dry
+Bhindi Masala,Veg,153,3,7,11,Dinner,Dry
+Aloo Gobi,Veg,176,5,8,20,Lunch,Dry
+Aloo Gobi,Veg,179,5,9,20,Dinner,Dry
+Chicken Stir Fry,Non-Veg,238,25,10,8,Lunch,Dry
+Chicken Stir Fry,Non-Veg,252,24,10,8,Dinner,Dry
+Jeera Aloo,Veg,152,3,7,21,Lunch,Dry
+Jeera Aloo,Veg,165,3,7,21,Dinner,Dry
+Baingan Bharta,Veg,146,3,5,15,Lunch,Dry
+Baingan Bharta,Veg,145,3,6,14,Dinner,Dry
+Mix Veg,Veg,175,3,8,17,Lunch,Dry
+Mix Veg,Veg,165,3,8,17,Dinner,Dry
+Vegetable Biryani,Veg,340,7,11,50,Lunch,Complete
+Vegetable Biryani,Veg,362,8,11,49,Dinner,Complete
+Chicken Biryani,Non-Veg,429,24,17,43,Lunch,Complete
+Chicken Biryani,Non-Veg,459,24,17,43,Dinner,Complete
+Rice and Dal,Veg,312,9,5,48,Lunch,Complete
+Rice and Dal,Veg,314,10,4,51,Dinner,Complete
+Khichdi,Veg,241,8,5,41,Lunch,Complete
+Khichdi,Veg,259,8,6,40,Dinner,Complete
+Pasta Arrabbiata,Veg,352,9,12,56,Lunch,Complete
+Pasta Arrabbiata,Veg,365,10,11,54,Dinner,Complete
+Grilled Chicken Salad,Non-Veg,285,28,10,14,Lunch,Complete
+Grilled Chicken Salad,Non-Veg,306,29,10,14,Dinner,Complete
+Curd Rice,Veg,227,5,7,35,Lunch,Complete
+Curd Rice,Veg,227,5,7,33,Dinner,Complete
+Veg Pulao,Veg,209,4,6,33,Lunch,RiceSide
+Veg Pulao,Veg,204,4,5,36,Dinner,RiceSide
+Jeera Rice,Veg,176,2,5,32,Lunch,RiceSide
+Jeera Rice,Veg,171,2,5,32,Dinner,RiceSide
+Peas Pulao,Veg,181,3,5,34,Lunch,RiceSide
+Peas Pulao,Veg,192,3,5,35,Dinner,RiceSide
+Ghee Rice,Veg,224,2,9,30,Lunch,RiceSide
+Ghee Rice,Veg,223,1,9,30,Dinner,RiceSide
+Greek Yogurt,Veg,103,9,0,15,Snack,Snack
+Almonds (Handful),Veg,162,5,13,6,Snack,Snack
+Fruit Salad,Veg,119,2,0,31,Snack,Snack
+Chickpea Salad,Veg,193,10,7,23,Snack,Snack
+Roasted Makhana,Veg,100,2,0,19,Snack,Snack
+Sprouts Salad,Veg,145,8,1,26,Snack,Snack
+Corn Chaat,Veg,175,4,1,35,Snack,Snack
+Vegetable Sandwich,Veg,240,7,7,34,Snack,Snack
+Boiled Eggs (2),Non-Veg,142,11,10,0,Snack,Snack
+Protein Smoothie,Veg,198,19,4,23,Snack,Snack
+Dhokla,Veg,164,5,4,24,Snack,Snack
+Cucumber Raita,Veg,80,4,2,7,Side,Side
+Boondi Raita,Veg,123,3,5,11,Side,Side
+Green Salad,Veg,48,0,0,9,Side,Side
+Buttermilk (Chaas),Veg,61,1,1,8,Side,Beverage
+Lassi (Sweet),Veg,209,5,8,28,Side,Beverage
+Masala Chai,Veg,102,1,3,15,Side,Beverage
+Green Tea,Veg,4,0,0,1,Side,Beverage
+Oatmeal,Veg,152,5,3,25,Breakfast,Complete
+Scrambled Eggs,Non-Veg,192,13,15,1,Breakfast,Complete
+Idli Sambar,Veg,177,6,2,34,Breakfast,Complete
+Poha,Veg,193,4,8,29,Breakfast,Complete
+Avocado Toast,Veg,238,5,18,20,Breakfast,Complete
+Masala Dosa,Veg,367,8,12,47,Breakfast,Complete
+Aloo Paratha,Veg,287,7,15,39,Breakfast,Complete
+Upma,Veg,178,3,5,30,Breakfast,Complete
+Besan Chilla,Veg,224,9,8,25,Breakfast,Complete
+Paneer Paratha,Veg,316,12,16,34,Breakfast,Complete
+Moong Dal Cheela,Veg,192,12,6,27,Breakfast,Complete
+Veg Grilled Sandwich,Veg,286,7,9,39,Breakfast,Complete
+Methi Thepla,Veg,206,5,8,27,Breakfast,Complete
+Vermicelli Upma,Veg,220,5,7,33,Breakfast,Complete
+Rava Idli,Veg,152,6,3,24,Breakfast,Complete
+Oats Pancake,Veg,250,8,7,32,Breakfast,Complete
+Egg Bhurji + Toast,Non-Veg,293,15,18,20,Breakfast,Complete
+Cheese Omelette,Non-Veg,334,17,23,4,Breakfast,Complete
+Muesli with Milk,Veg,279,10,6,46,Breakfast,Complete
+Sabudana Khichdi,Veg,342,2,14,54,Breakfast,Complete
+Paneer Butter Masala,Veg,306,11,25,10,Lunch,Gravy
+Paneer Butter Masala,Veg,308,11,23,10,Dinner,Gravy
+Dal Makhani,Veg,273,10,15,19,Lunch,Gravy
+Dal Makhani,Veg,282,9,14,19,Dinner,Gravy
+Chana Masala,Veg,213,11,8,29,Lunch,Gravy
+Chana Masala,Veg,216,11,7,28,Dinner,Gravy
+Palak Paneer,Veg,250,13,19,8,Lunch,Gravy
+Palak Paneer,Veg,265,14,20,7,Dinner,Gravy
+Chicken Curry,Non-Veg,295,25,18,4,Lunch,Gravy
+Chicken Curry,Non-Veg,302,25,17,5,Dinner,Gravy
+Butter Chicken,Non-Veg,355,27,21,8,Lunch,Gravy
+Butter Chicken,Non-Veg,349,26,22,8,Dinner,Gravy
+Fish Curry,Non-Veg,285,25,14,5,Lunch,Gravy
+Fish Curry,Non-Veg,267,23,15,5,Dinner,Gravy
+Egg Curry,Non-Veg,215,12,15,6,Lunch,Gravy
+Egg Curry,Non-Veg,210,12,16,6,Dinner,Gravy
+Kadai Vegetable,Veg,179,4,10,14,Lunch,Gravy
+Kadai Vegetable,Veg,173,5,10,14,Dinner,Gravy
+Rajma Masala,Veg,245,10,7,29,Lunch,Gravy
+Rajma Masala,Veg,231,10,7,29,Dinner,Gravy
+Mutter Paneer,Veg,270,10,17,12,Lunch,Gravy
+Mutter Paneer,Veg,262,11,18,11,Dinner,Gravy
+Malai Kofta,Veg,323,8,21,17,Lunch,Gravy
+Malai Kofta,Veg,307,7,22,17,Dinner,Gravy
+Bhindi Masala,Veg,149,4,8,12,Lunch,Dry
+Bhindi Masala,Veg,152,3,8,12,Dinner,Dry
+Aloo Gobi,Veg,173,5,8,19,Lunch,Dry
+Aloo Gobi,Veg,180,5,8,20,Dinner,Dry
+Chicken Stir Fry,Non-Veg,239,23,10,7,Lunch,Dry
+Chicken Stir Fry,Non-Veg,239,26,10,7,Dinner,Dry
+Jeera Aloo,Veg,165,3,8,21,Lunch,Dry
+Jeera Aloo,Veg,160,2,8,21,Dinner,Dry
+Baingan Bharta,Veg,142,3,5,15,Lunch,Dry
+Baingan Bharta,Veg,138,2,6,14,Dinner,Dry
+Mix Veg,Veg,174,4,8,17,Lunch,Dry
+Mix Veg,Veg,176,3,7,18,Dinner,Dry
+Vegetable Biryani,Veg,350,8,12,47,Lunch,Complete
+Vegetable Biryani,Veg,346,7,11,49,Dinner,Complete
+Chicken Biryani,Non-Veg,466,25,17,45,Lunch,Complete
+Chicken Biryani,Non-Veg,464,25,18,43,Dinner,Complete
+Rice and Dal,Veg,303,9,4,48,Lunch,Complete
+Rice and Dal,Veg,293,9,5,51,Dinner,Complete
+Khichdi,Veg,246,8,5,39,Lunch,Complete
+Khichdi,Veg,258,7,6,40,Dinner,Complete
+Pasta Arrabbiata,Veg,336,9,12,53,Lunch,Complete
+Pasta Arrabbiata,Veg,366,9,11,52,Dinner,Complete
+Grilled Chicken Salad,Non-Veg,301,30,10,14,Lunch,Complete
+Grilled Chicken Salad,Non-Veg,305,30,10,14,Dinner,Complete
+Curd Rice,Veg,212,6,7,34,Lunch,Complete
+Curd Rice,Veg,224,5,8,36,Dinner,Complete
+Veg Pulao,Veg,199,4,6,34,Lunch,RiceSide
+Veg Pulao,Veg,196,4,6,35,Dinner,RiceSide
+Jeera Rice,Veg,177,3,5,32,Lunch,RiceSide
+Jeera Rice,Veg,174,2,5,33,Dinner,RiceSide
+Peas Pulao,Veg,197,3,5,34,Lunch,RiceSide
+Peas Pulao,Veg,180,4,5,34,Dinner,RiceSide
+Ghee Rice,Veg,215,2,10,29,Lunch,RiceSide
+Ghee Rice,Veg,223,2,9,29,Dinner,RiceSide
+Greek Yogurt,Veg,103,9,0,14,Snack,Snack
+Almonds (Handful),Veg,162,5,13,5,Snack,Snack
+Fruit Salad,Veg,118,1,0,28,Snack,Snack
+Chickpea Salad,Veg,208,9,8,23,Snack,Snack
+Roasted Makhana,Veg,102,2,0,19,Snack,Snack
+Sprouts Salad,Veg,153,8,0,24,Snack,Snack
+Corn Chaat,Veg,178,5,1,35,Snack,Snack
+Vegetable Sandwich,Veg,258,8,8,33,Snack,Snack
+Boiled Eggs (2),Non-Veg,134,12,10,1,Snack,Snack
+Protein Smoothie,Veg,199,20,3,25,Snack,Snack
+Dhokla,Veg,162,6,4,25,Snack,Snack
+Cucumber Raita,Veg,77,4,2,8,Side,Side
+Boondi Raita,Veg,119,2,5,11,Side,Side
+Green Salad,Veg,49,0,0,10,Side,Side
+Buttermilk (Chaas),Veg,61,2,1,7,Side,Beverage
+Lassi (Sweet),Veg,191,6,7,31,Side,Beverage
+Masala Chai,Veg,101,1,2,15,Side,Beverage
+Green Tea,Veg,5,0,0,0,Side,Beverage
