@@ -17,10 +17,17 @@ app.add_middleware(
 
 # Initialize recommender
 # Ensure data exists
-if not os.path.exists("food_data.csv"):
-    pass
+if not os.path.exists("food_data_processed.csv"):
+    # If processed file doesn't exist, try to generate it from the raw Kaggle dataset
+    if os.path.exists("Indian_Food_Nutrition_Processed.csv"):
+        import process_dataset
+        process_dataset.preprocess_new_dataset("Indian_Food_Nutrition_Processed.csv", "food_data_processed.csv")
+    else:
+        pass # Handle error or fallback
 
-recommender = DietRecommender(data_path="food_data.csv")
+recommender = DietRecommender(data_path="food_data_processed.csv")
+
+
 
 class UserInput(BaseModel):
     age: int
@@ -47,3 +54,5 @@ def get_recommendation(user_input: UserInput):
 @app.get("/")
 def read_root():
     return {"message": "Smart Diet Recommender API is running"}
+
+# Trigger reload again 6
