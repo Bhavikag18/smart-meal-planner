@@ -135,348 +135,245 @@ class DietRecommender:
     
     def calculate_bmr(self, weight, height, age, gender):
         if gender.lower() == 'male':
-            bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5
+            return (10 * weight) + (6.25 * height) - (5 * age) + 5
         else:
-            bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161
-        return bmr
+            return (10 * weight) + (6.25 * height) - (5 * age) - 161
+
+    def calculate_tdee(self, bmr, activity_level, goal):
+        multipliers = {
+            "sedentary": 1.2, "light": 1.375, "moderate": 1.55,
+            "active": 1.725, "extra_active": 1.9
+        }
+        tdee = bmr * multipliers.get(activity_level, 1.2)
+        
+        if goal == "weight_loss":
+            # Target should be between BMR and TDEE-500
+            target = tdee - 500
+            tdee = max(bmr - 100, target) if target < bmr else target
+        elif goal == "weight_gain":
+            tdee += 300
+            
+        return max(1200, tdee)
 
     def recommend(self, age, weight, height, gender, activity_level, veg_preference, goal):
         bmr = self.calculate_bmr(weight, height, age, gender)
-        
-        activity_multipliers = {
-            "sedentary": 1.2,
-            "light": 1.375,
-            "moderate": 1.55,
-            "active": 1.725,
-            "extra_active": 1.9
-        }
-        tdee = bmr * activity_multipliers.get(activity_level, 1.2)
-        
-        # Adjust for Goal based on provided equations
-        if goal == "weight_loss":
-            # Image says TDEE - 300 to 500. We use 500.
-            # User Constraint: Target must be < BMR
-            target_loss = tdee - 500
-            if target_loss >= bmr:
-                 tdee = bmr - 100
-            else:
-                 tdee = target_loss
-        elif goal == "weight_gain":
-            # Image says TDEE + 200 to 400. We use 300.
-            tdee += 300
-        
-        if tdee < 1200: tdee = 1200
+        tdee = self.calculate_tdee(bmr, activity_level, goal)
         
         targets = {
-            "Breakfast": tdee * 0.25,
-            "Lunch": tdee * 0.35,
-            "Dinner": tdee * 0.30,
-            "Snack": tdee * 0.10
+            "Breakfast": tdee * 0.25, "Lunch": tdee * 0.35,
+            "Dinner": tdee * 0.30, "Snack": tdee * 0.10
         }
         
         recommendations = {}
-        
-        if veg_preference == "Veg":
-            filtered_df = self.df[self.df['Type'] == 'Veg']
-            sides_pool = self.sides_df[self.sides_df['Type'] == 'Veg']
-        else:
-            filtered_df = self.df 
-            sides_pool = self.sides_df
-        
         used_dishes = set()
-
-        for meal, target_cal in targets.items():
-            # Filter out already used dishes
-            meal_df = filtered_df[
-                (filtered_df['Meal_Type'] == meal) & 
-                (~filtered_df['Name'].isin(used_dishes))
-            ].copy()
-            
-            # If we ran out of unique options, fall back to full list
-            if meal_df.empty:
-                 meal_df = filtered_df[filtered_df['Meal_Type'] == meal].copy()
-
-            # PRIORITIZE NON-VEG
-            # If user is Non-Veg, try to force Non-Veg options if available
-            if veg_preference != "Veg":
-                nv_options = meal_df[meal_df['Type'] == 'Non-Veg']
-                if not nv_options.empty:
-                    meal_df = nv_options
-
-            if meal_df.empty:
-                recommendations[meal] = None
-                continue
-            
-            current_meal_cal_target = target_cal
-            side_dish = None
-            
-            # Filter sides for Lunch/Dinner to be savory only
-            if meal in ["Lunch", "Dinner"]:
-                # Exclude beverages and sweet items from sides for main meals
-                # We want things like Raita, Salad, Papad, Buttermilk
-                # EXCLUDE PICKLES as they are calorie bombs in dataset but eaten in small amounts
-                savory_keywords = ["raita", "salad", "papad", "chutney", "yogurt", "curd", "buttermilk", "lassi"]
-                
-                def is_savory_side(name):
-                    name = str(name).lower()
-                    # Explicitly exclude sweet drinks if they slipped in
-                    if any(x in name for x in ["shake", "smoothie", "juice", "coffee", "tea", "chocolate"]):
-                        return False
-                    return any(x in name for x in savory_keywords)
-                
-                meal_sides_pool = sides_pool[sides_pool['Name'].apply(is_savory_side)]
-            else:
-                meal_sides_pool = sides_pool
-
-            # Add a Side/Beverage to Lunch and Dinner (80% chance)
-            if meal in ["Lunch", "Dinner"] and not meal_sides_pool.empty:
-                if random.random() < 0.8:
-                    # Pick a random side
-                    side_row = meal_sides_pool.sample(1).iloc[0]
-                    side_dish = side_row.to_dict()
-                    current_meal_cal_target -= side_dish['Calories']
-            
-            # Logic for Lunch/Dinner to include staples
-            if meal in ["Lunch", "Dinner"]:
-                # Split available options into Complete Meals (RiceSide/Complete) and Curries (Gravy/Dry)
-                complete_meals = meal_df[meal_df['Category'].isin(['RiceSide', 'Complete'])]
-                curries = meal_df[meal_df['Category'].isin(['Gravy', 'Dry'])]
-                
-                # Decision: Complete Meal vs Curry+Staple
-                # 30% chance for Complete Meal (if available), 70% for Curry+Staple
-                # If one is empty, force the other.
-                use_complete_meal = False
-                if not complete_meals.empty and (curries.empty or random.random() < 0.3):
-                    use_complete_meal = True
-                
-                if not use_complete_meal and not curries.empty:
-                    # CURRY + STAPLE PATH
-                    
-                    # Target for main dish is roughly 50-60% of remaining calories
-                    # But we must ensure we have room for at least 1 Chapati (100 cal) or 0.5 cup Rice (75 cal)
-                    min_staple_cal = 75
-                    if current_meal_cal_target < min_staple_cal + 50: 
-                        # Too low for a proper meal, fallback to complete meal if possible
-                        if not complete_meals.empty:
-                            use_complete_meal = True
-                        else:
-                            # Just pick a small curry? Or maybe just staples? 
-                            # Let's stick to the logic, it might just result in small portion.
-                            pass
-
-                    if not use_complete_meal:
-                        main_target = current_meal_cal_target * 0.6
-                        
-                        best_match = self._find_closest(curries, main_target)
-                        
-                        # Calculate remaining calories for staple
-                        remaining_cal = current_meal_cal_target - best_match['Calories']
-                        
-                        # Choose staple
-                        staple_name = "Steamed Rice (1 cup)" if "Rice" in best_match['Name'] or "Fish" in best_match['Name'] else "Chapati"
-                        staple_stats = self.staples[staple_name]
-                        
-                        # Calculate quantity
-                        qty = max(1, round(remaining_cal / staple_stats['Calories'], 1))
-                        qty = round(qty * 2) / 2
-                        if qty < 0.5: qty = 0.5 # Minimum 0.5
-                        
-                        extra_dish = None
-                        
-                        # Cap Chapatis at 4
-                        if staple_name == "Chapati" and qty > 4:
-                            # Cap at 4
-                            qty = 4
-                            # Calculate deficit
-                            cal_covered = 4 * staple_stats['Calories']
-                            deficit = remaining_cal - cal_covered
-                            
-                            if deficit > 100: # Only add extra if deficit is significant
-                                # Strategy: 50% chance for RiceSide (Pulao), 50% for 2nd Veg
-                                rice_sides = meal_df[meal_df['Category'] == 'RiceSide']
-                                other_veg = meal_df[meal_df['Category'].isin(['Gravy', 'Dry'])]
-                                
-                                # Filter out the already picked main dish from other_veg
-                                other_veg = other_veg[other_veg['Name'] != best_match['Name']]
-                                
-                                if not rice_sides.empty and (random.random() < 0.5 or other_veg.empty):
-                                    # Add RiceSide (Pulao)
-                                    # Find closest to deficit
-                                    extra_dish = self._find_closest(rice_sides, deficit).to_dict()
-                                elif not other_veg.empty:
-                                    # Add 2nd Vegetable
-                                    extra_dish = self._find_closest(other_veg, deficit).to_dict()
-                        
-                        # Format quantity string
-                        if "Rice" in staple_name:
-                             qty_str = f"{qty} cups"
-                             display_staple = "Steamed Rice"
-                        else:
-                             qty_int = int(qty) if qty.is_integer() else qty
-                             qty_str = f"{qty_int} Chapatis" if qty > 1 else f"{qty_int} Chapati"
-                             display_staple = "" 
-
-                        name_str = f"{best_match['Name']} + {qty_str} {display_staple}".strip()
-                        
-                        if extra_dish:
-                            name_str += f" + {extra_dish['Name']}"
-                            used_dishes.add(extra_dish['Name'])
-                        
-                        # Add side to name if present
-                        if side_dish:
-                            name_str += f" + {side_dish['Name']}"
-
-                        # Combine stats
-                        total_cal = best_match['Calories'] + (qty * staple_stats['Calories'])
-                        total_prot = best_match['Proteins'] + (qty * staple_stats['Proteins'])
-                        total_fat = best_match['Fats'] + (qty * staple_stats['Fats'])
-                        total_carb = best_match['Carbs'] + (qty * staple_stats['Carbs'])
-                        
-                        if extra_dish:
-                            total_cal += extra_dish['Calories']
-                            total_prot += extra_dish['Proteins']
-                            total_fat += extra_dish['Fats']
-                            total_carb += extra_dish['Carbs']
-
-                        if side_dish:
-                            total_cal += side_dish['Calories']
-                            total_prot += side_dish['Proteins']
-                            total_fat += side_dish['Fats']
-                            total_carb += side_dish['Carbs']
-                        
-                        used_dishes.add(best_match['Name'])
-                        recommendations[meal] = {
-                            "Name": name_str,
-                            "Type": best_match['Type'],
-                            "Calories": int(total_cal),
-                            "Proteins": int(total_prot),
-                            "Fats": int(total_fat),
-                            "Carbs": int(total_carb),
-                            "Meal_Type": meal
-                        }
-                        continue
-
-            # Fallback / Complete Meal Path
-            # For Breakfast, pick randomly from top 10 closest to ensure variety
-            if meal == "Breakfast":
-                # Adjust target for Breakfast to leave room for potential side dish
-                bf_target = max(200, current_meal_cal_target - 150)
-                
-                X = meal_df[['Calories']].values
-                nbrs = NearestNeighbors(n_neighbors=min(10, len(meal_df)), algorithm='ball_tree').fit(X)
-                distances, indices = nbrs.kneighbors([[bf_target]])
-                
-                # Pick random index from the top k neighbors
-                random_idx = random.choice(indices[0])
-                best_match = meal_df.iloc[random_idx]
-
-                # --- PAIRING LOGIC FOR BREAKFAST ---
-                # Some items like Bhatura, Poori, Idli, Dosa need a side dish to be a complete meal.
-                standard_pairings = {
-                    "Bhatura": ["Chickpeas curry", "Chole", "Chana Masala", "Chickpeas"],
-                    "Poori": ["Potato curry", "Aloo", "Bhaji", "Potato"],
-                    "Idli": ["Sambar", "Coconut chutney", "Chutney"],
-                    "Dosa": ["Sambar", "Coconut chutney", "Chutney"],
-                    "Appam": ["Stew", "Curry"],
-                    "Paratha": ["Curd", "Yogurt", "Pickle"],
-                    "Naan": ["Paneer", "Dal", "Curry", "Chicken"],
-                    "Kulcha": ["Chole", "Chickpeas", "Curry"],
-                    "Roti": ["Dal", "Curry", "Sabzi"],
-                    "Chapati": ["Dal", "Curry", "Sabzi"]
-                }
-                
-                pairing_dish = None
-                best_match_name_lower = str(best_match['Name']).lower()
-                
-                for key, options in standard_pairings.items():
-                    if key.lower() in best_match_name_lower:
-                        # Check if side is already in the name (e.g. "Idli Sambar")
-                        already_has_side = False
-                        for opt in options:
-                            if opt.lower() in best_match_name_lower:
-                                already_has_side = True
-                                break
-                        
-                        if not already_has_side:
-                            # Find a pairing dish
-                            # Search in Gravy or Side categories
-                            potential_sides = self.df[self.df['Category'].isin(['Gravy', 'Side', 'Dry'])]
-                            
-                            for opt in options:
-                                # Try to find a dish with this name
-                                matches = potential_sides[potential_sides['Name'].str.contains(opt, case=False, na=False)]
-                                if not matches.empty:
-                                    # Pick the lowest calorie option to avoid exploding the total
-                                    pairing_dish = matches.sort_values('Calories').iloc[0].to_dict()
-                                    break
-                            
-                            if pairing_dish:
-                                break
-                
-                if pairing_dish:
-                    side_dish = pairing_dish # Reuse side_dish variable logic below
-                    # Note: We will add it to the final output in the common block below
-            else:
-                # For Lunch/Dinner fallback, prefer Complete meals if we are here
-                if meal in ["Lunch", "Dinner"]:
-                     complete_meals = meal_df[meal_df['Category'].isin(['RiceSide', 'Complete'])]
-                     if not complete_meals.empty:
-                         best_match = self._find_closest(complete_meals, current_meal_cal_target)
-                     else:
-                         best_match = self._find_closest(meal_df, current_meal_cal_target)
-                     
-                     # SCALE UP IF TOO SMALL
-                     # If the selected complete meal is < 60% of target, double it.
-                     if best_match['Calories'] < current_meal_cal_target * 0.6:
-                         # Double the portion
-                         best_match = best_match.copy()
-                         best_match['Name'] = f"2 servings of {best_match['Name']}"
-                         best_match['Calories'] *= 2
-                         best_match['Proteins'] *= 2
-                         best_match['Fats'] *= 2
-                         best_match['Carbs'] *= 2
-                else:
-                    best_match = self._find_closest(meal_df, current_meal_cal_target)
-            
-            used_dishes.add(best_match['Name'])
-            
-            name_str = best_match['Name']
-            total_cal = best_match['Calories']
-            total_prot = best_match['Proteins']
-            total_fat = best_match['Fats']
-            total_carb = best_match['Carbs']
-            
-            if side_dish:
-                name_str += f" + {side_dish['Name']}"
-                total_cal += side_dish['Calories']
-                total_prot += side_dish['Proteins']
-                total_fat += side_dish['Fats']
-                total_carb += side_dish['Carbs']
-
-            recommendations[meal] = {
-                "Name": name_str,
-                "Type": best_match['Type'],
-                "Calories": int(total_cal),
-                "Proteins": int(total_prot),
-                "Fats": int(total_fat),
-                "Carbs": int(total_carb),
-                "Meal_Type": meal,
-                "Category": best_match['Category']
-            }
         
-        # Calculate actual total calories
-        total_plan_calories = sum(m['Calories'] for m in recommendations.values() if m)
+        # Base filter for Veg/Non-Veg
+        base_df = self.df if veg_preference != "Veg" else self.df[self.df['Type'] == 'Veg']
+        
+        for meal, target in targets.items():
+            if meal in ["Lunch", "Dinner"]:
+                rec = self._recommend_lunch_dinner(meal, target, base_df, veg_preference, used_dishes)
+            elif meal == "Breakfast":
+                rec = self._recommend_breakfast(target, base_df, used_dishes)
+            else:
+                rec = self._recommend_simple(meal, target, base_df, used_dishes)
+            
+            if rec:
+                recommendations[meal] = rec
+                # Add main components to used list to avoid repetition
+                for part in rec['Name'].split(" + "):
+                    used_dishes.add(part.strip())
+
+        total_cal = sum(m['Calories'] for m in recommendations.values() if m)
+        
+        # Calculate Accuracy (Total Calorie Match)
+        accuracy = 0
+        if tdee > 0:
+            accuracy = max(0, 100 - (abs(total_cal - tdee) / tdee * 100))
+
+        # Calculate Precision (Meal-wise Match)
+        meal_deviations = []
+        for meal, target in targets.items():
+            if meal in recommendations:
+                actual = recommendations[meal]['Calories']
+                if target > 0:
+                    deviation = abs(actual - target) / target
+                    meal_deviations.append(deviation)
+            else:
+                meal_deviations.append(1.0) # 100% error if meal missing
+        
+        precision = 0
+        if meal_deviations:
+            avg_deviation = sum(meal_deviations) / len(meal_deviations)
+            precision = max(0, 100 - (avg_deviation * 100))
 
         return {
             "BMR": round(bmr, 2),
             "TDEE": round(tdee, 2),
-            "TotalCalories": total_plan_calories,
+            "TotalCalories": int(total_cal),
+            "Accuracy": round(accuracy, 2),
+            "Precision": round(precision, 2),
             "Plan": recommendations
+        }
+
+    def _get_meal_options(self, meal_type, base_df, used_dishes, veg_preference="Any"):
+        # Filter by meal type and exclude used dishes
+        options = base_df[
+            (base_df['Meal_Type'] == meal_type) & 
+            (~base_df['Name'].isin(used_dishes))
+        ]
+        
+        # Fallback: if ran out of options, reuse dishes
+        if options.empty:
+            options = base_df[base_df['Meal_Type'] == meal_type]
+            
+        # Prioritize Non-Veg if user is Non-Veg
+        if veg_preference == "Non-Veg":
+            nv_options = options[options['Type'] == 'Non-Veg']
+            if not nv_options.empty:
+                return nv_options
+                
+        return options
+
+    def _recommend_lunch_dinner(self, meal_type, target, base_df, veg_preference, used_dishes):
+        options = self._get_meal_options(meal_type, base_df, used_dishes, veg_preference)
+        if options.empty: return None
+        
+        current_target = target
+        side_dish = None
+        
+        # 1. Select Side Dish (80% chance)
+        # Filter for savory sides (exclude sweet drinks)
+        savory_sides = self.sides_df[self.sides_df['Name'].apply(lambda x: not any(s in str(x).lower() for s in ['shake', 'juice', 'coffee', 'tea']))]
+        if veg_preference == "Veg": 
+            savory_sides = savory_sides[savory_sides['Type'] == 'Veg']
+            
+        if not savory_sides.empty and random.random() < 0.8:
+            side_dish = savory_sides.sample(1).iloc[0].to_dict()
+            current_target -= side_dish['Calories']
+
+        # 2. Select Main Dish Strategy: Complete Meal vs Curry + Staple
+        curries = options[options['Category'].isin(['Gravy', 'Dry'])]
+        complete = options[options['Category'].isin(['RiceSide', 'Complete'])]
+        
+        # Default to Curry+Staple (70%), unless no curries available
+        use_complete = False
+        if not complete.empty and (curries.empty or random.random() < 0.3):
+            use_complete = True
+            
+        main_dish = None
+        staple_info = None
+        extra_dish = None
+        
+        if not use_complete and not curries.empty:
+            # --- Curry + Staple Logic ---
+            main_target = current_target * 0.6
+            main_dish = self._find_closest(curries, main_target).to_dict()
+            
+            # Determine Staple (Rice or Chapati)
+            remaining = current_target - main_dish['Calories']
+            is_rice_dish = any(x in main_dish['Name'] for x in ['Rice', 'Fish'])
+            staple_name = "Steamed Rice (1 cup)" if is_rice_dish else "Chapati"
+            staple_cal = self.staples[staple_name]['Calories']
+            
+            # Calculate Quantity
+            qty = max(0.5, round(remaining / staple_cal * 2) / 2)
+            if staple_name == "Chapati" and qty > 4: qty = 4 # Cap at 4 Chapatis
+            
+            staple_info = {"Name": staple_name, "Qty": qty, "Stats": self.staples[staple_name]}
+            
+            # Check for large calorie deficit -> Add Extra Dish
+            deficit = remaining - (qty * staple_cal)
+            if deficit > 100:
+                extra_opts = options[options['Category'].isin(['RiceSide', 'Gravy', 'Dry'])]
+                extra_opts = extra_opts[extra_opts['Name'] != main_dish['Name']]
+                if not extra_opts.empty:
+                    extra_dish = self._find_closest(extra_opts, deficit).to_dict()
+        else:
+            # --- Complete Meal Logic ---
+            pool = complete if not complete.empty else options
+            main_dish = self._find_closest(pool, current_target).to_dict()
+            
+            # Scale up if portion is too small (< 60% of target)
+            if main_dish['Calories'] < current_target * 0.6:
+                main_dish['Name'] = f"2 servings of {main_dish['Name']}"
+                for k in ['Calories', 'Proteins', 'Fats', 'Carbs']: 
+                    main_dish[k] *= 2
+
+        return self._format_meal(main_dish, staple_info, side_dish, extra_dish, meal_type)
+
+    def _recommend_breakfast(self, target, base_df, used_dishes):
+        options = self._get_meal_options("Breakfast", base_df, used_dishes)
+        if options.empty: return None
+        
+        # Pick random option close to target (minus buffer for potential side)
+        target_search = max(200, target - 150)
+        X = options[['Calories']].values
+        nbrs = NearestNeighbors(n_neighbors=min(10, len(options)), algorithm='ball_tree').fit(X)
+        indices = nbrs.kneighbors([[target_search]])[1][0]
+        main_dish = options.iloc[random.choice(indices)].to_dict()
+        
+        # Check for pairings (e.g. Idli + Sambar)
+        side_dish = self._find_pairing(main_dish['Name'])
+        
+        return self._format_meal(main_dish, None, side_dish, None, "Breakfast")
+
+    def _recommend_simple(self, meal_type, target, base_df, used_dishes):
+        options = self._get_meal_options(meal_type, base_df, used_dishes)
+        if options.empty: return None
+        
+        main_dish = self._find_closest(options, target).to_dict()
+        return self._format_meal(main_dish, None, None, None, meal_type)
+
+    def _find_pairing(self, dish_name):
+        pairings = {
+            "Bhatura": ["Chole", "Chickpeas"], "Poori": ["Aloo", "Potato"],
+            "Idli": ["Sambar", "Chutney"], "Dosa": ["Sambar", "Chutney"],
+            "Paratha": ["Curd", "Yogurt"], "Roti": ["Dal", "Sabzi"]
+        }
+        for key, sides in pairings.items():
+            if key.lower() in dish_name.lower():
+                if any(s.lower() in dish_name.lower() for s in sides): return None # Already has side
+                
+                for s in sides:
+                    matches = self.df[self.df['Name'].str.contains(s, case=False)]
+                    if not matches.empty:
+                        return matches.sort_values('Calories').iloc[0].to_dict()
+        return None
+
+    def _format_meal(self, main, staple, side, extra, meal_type):
+        total_stats = {k: main[k] for k in ['Calories', 'Proteins', 'Fats', 'Carbs']}
+        name_parts = [main['Name']]
+        
+        if staple:
+            s_name = "Steamed Rice" if "Rice" in staple['Name'] else "Chapati"
+            qty_str = f"{staple['Qty']} cups" if "Rice" in s_name else f"{int(staple['Qty'])} {s_name}"
+            # Avoid redundant "Rice + Rice"
+            if "Rice" in main['Name'] and "Rice" in s_name:
+                 name_parts.append(qty_str)
+            else:
+                 name_parts.append(qty_str + (" " + s_name if "Rice" in s_name else ""))
+            
+            for k in total_stats: total_stats[k] += staple['Qty'] * staple['Stats'][k]
+            
+        if extra:
+            name_parts.append(extra['Name'])
+            for k in total_stats: total_stats[k] += extra[k]
+            
+        if side:
+            name_parts.append(side['Name'])
+            for k in total_stats: total_stats[k] += side[k]
+            
+        return {
+            "Name": " + ".join(name_parts),
+            "Type": main['Type'],
+            "Meal_Type": meal_type,
+            "Category": main.get('Category', 'Unknown'),
+            **{k: int(v) for k, v in total_stats.items()}
         }
 
     def _find_closest(self, df, target_cal):
         X = df[['Calories']].values
         nbrs = NearestNeighbors(n_neighbors=1, algorithm='ball_tree').fit(X)
         distances, indices = nbrs.kneighbors([[target_cal]])
-        best_match_idx = indices[0][0]
-        return df.iloc[best_match_idx]
+        return df.iloc[indices[0][0]]

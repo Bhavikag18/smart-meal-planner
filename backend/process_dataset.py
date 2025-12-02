@@ -147,3 +147,4 @@ def preprocess_new_dataset(input_path, output_path):
 
 if __name__ == "__main__":
     preprocess_new_dataset("Indian_Food_Nutrition_Processed.csv", "food_data_processed.csv")
+

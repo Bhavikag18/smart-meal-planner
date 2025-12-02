@@ -22,6 +22,20 @@ const Result = ({ data }) => {
           <div className="stat-value">{data.TotalCalories}</div>
           <div>kcal/day</div>
         </div>
+        {data.Accuracy !== undefined && (
+          <div className="stat-box">
+            <div>Accuracy</div>
+            <div className="stat-value">{data.Accuracy}%</div>
+            <div>Match</div>
+          </div>
+        )}
+        {data.Precision !== undefined && (
+          <div className="stat-box">
+            <div>Precision</div>
+            <div className="stat-value">{data.Precision}%</div>
+            <div>Meal Match</div>
+          </div>
+        )}
       </div>
 
       <h3>Recommended Meals</h3>
